@@ -1,0 +1,14 @@
+version: '3'
+services:
+  backend:
+    image: todo-backend
+    container_name: backend
+
+  nginx:
+    image: todo-nginx
+    container_name: nginx
+    ports:
+      - "20112:20112"
+    depends_on:
+      - backend
+
