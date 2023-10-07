@@ -7,6 +7,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'  # SQLite database
 db = SQLAlchemy(app)
 
 # Define your Todo model here
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    completed = db.Column(db.Boolean, default=False)
+
+    def __init__(self, title, completed=False):
+        self.title = title
+        self.completed = completed
 
 @app.route('/todos', methods=['GET', 'POST'])
 def todos():
