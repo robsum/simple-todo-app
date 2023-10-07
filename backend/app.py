@@ -25,26 +25,37 @@ def todos():
 
 @app.route('/todos', methods=['POST'])
 def create_todo():
-    data = request.get_json()
-    new_todo = Todo(title=data['title'])
-
     try:
-        with app.app_context():
-            db.session.add(new_todo)
-            db.session.commit()
+        data = request.get_json()
+
+        if 'title' not in data:
+            return jsonify({"error": "Title is required"}), 400
+
+        new_todo = Todo(title=data['title'])
+
+        try:
+            with app.app_context():
+                db.session.add(new_todo)
+                db.session.commit()
+            
+            # Serialize the relevant properties of the new_todo object
+            todo_dict = {
+                "id": new_todo.id,
+                "title": new_todo.title,
+                "completed": new_todo.completed
+            }
+
+            return jsonify(todo_dict), 201
+
+        except Exception as e:
+            with app.app_context():
+                db.session.rollback()
+                app.logger.error(f"Failed to create todo: {str(e)}")
+            return jsonify({"error": "Failed to create todo"}), 500
     except Exception as e:
-        with app.app_context():
-            db.session.rollback()
-        return jsonify({"error": "Failed to create todo"}), 500
+        return jsonify({"error": "Invalid JSON data"}), 400
 
-    # Serialize the relevant properties of the new_todo object
-    todo_dict = {
-        "id": new_todo.id,
-        "title": new_todo.title,
-        "completed": new_todo.completed
-    }
-
-    return jsonify(todo_dict), 201
+    
 
 
 @app.route('/todos/<int:id>', methods=['GET', 'PUT', 'DELETE'])
