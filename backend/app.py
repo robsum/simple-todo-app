@@ -16,20 +16,36 @@ class Todo(db.Model):
         self.title = title
         self.completed = completed
 
-@app.route('/todos', methods=['GET', 'POST'])
+@app.route('/todos', methods=['GET'])
 def todos():
     if request.method == 'GET':
         with app.app_context():
             todos = Todo.query.all()
             return jsonify([todo.__dict__ for todo in todos])
 
-    if request.method == 'POST':
-        data = request.get_json()
-        new_todo = Todo(title=data['title'])
+@app.route('/todos', methods=['POST'])
+def create_todo():
+    data = request.get_json()
+    new_todo = Todo(title=data['title'])
+
+    try:
         with app.app_context():
             db.session.add(new_todo)
             db.session.commit()
-        return jsonify(new_todo.__dict__), 201
+    except Exception as e:
+        with app.app_context():
+            db.session.rollback()
+        return jsonify({"error": "Failed to create todo"}), 500
+
+    # Serialize the relevant properties of the new_todo object
+    todo_dict = {
+        "id": new_todo.id,
+        "title": new_todo.title,
+        "completed": new_todo.completed
+    }
+
+    return jsonify(todo_dict), 201
+
 
 @app.route('/todos/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def todo(id):
