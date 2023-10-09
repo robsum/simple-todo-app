@@ -21,7 +21,8 @@ def todos():
     if request.method == 'GET':
         with app.app_context():
             todos = Todo.query.all()
-            return jsonify([todo.__dict__ for todo in todos])
+            todo_list = [{"id": todo.id, "title": todo.title, "completed": todo.completed} for todo in todos]
+            return jsonify(todo_list)
 
 @app.route('/todos', methods=['POST'])
 def create_todo():
@@ -35,7 +36,8 @@ def create_todo():
 
         try:
             with app.app_context():
-                db.session.add(new_todo)
+                with db.session.begin():
+                    db.session.add(new_todo)
                 db.session.commit()
             
             # Serialize the relevant properties of the new_todo object
