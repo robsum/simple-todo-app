@@ -47,7 +47,7 @@ def create_todo():
                 "completed": new_todo.completed
             }
 
-            return jsonify(todo_dict), 201
+            return jsonify(todo_dict), 200
 
         except Exception as e:
             with app.app_context():
