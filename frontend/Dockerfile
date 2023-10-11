@@ -1,5 +1,5 @@
  # Use an official Node.js runtime as the base image
-FROM node:14 as build-stage
+FROM node:20 as build-stage
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Use an Nginx web server as the base image for the production stage
-FROM nginx:1.21
+FROM nginx:1.25
 
 # Copy the built Vue.js application from the build stage to the Nginx web root directory
 COPY --from=build-stage /app/dist /usr/share/nginx/html

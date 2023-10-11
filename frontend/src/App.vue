@@ -1,15 +1,27 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id=app>
+    <img alt="Vue logo" src="./assets/logo.png">
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <TodoForm @todo-created="handleTodoCreated" />
+    <TodoList />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TodoForm from './components/TodoForm.vue';
+import TodoList from './components/TodoList.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TodoForm,
+    TodoList
+  },
+  methods: {
+    handleTodoCreated() {
+      // This method is called when a new todo is created
+      // You can perform any additional actions here if needed
+    }
   }
 }
 </script>
