@@ -17,14 +17,17 @@ COPY . .
 RUN npm run build
 
 # Use an Nginx web server as the base image for the production stage
-FROM nginx:1.25
+#FROM nginx:1.25
 
 # Copy the built Vue.js application from the build stage to the Nginx web root directory
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+#COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 # Expose port 80 (the default HTTP port)
-EXPOSE 80
+#EXPOSE 80
 
 # Start the Nginx web server
-CMD ["nginx", "-g", "daemon off;"]
+#CMD ["nginx", "-g", "daemon off;"]
 
+EXPOSE 8080
+
+CMD ["npm", "run", "serve"]
