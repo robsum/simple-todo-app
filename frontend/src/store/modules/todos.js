@@ -10,6 +10,7 @@ const state = {
     },
     addTodo(state, todo) {
       state.todos.push(todo);
+      console.log('New todo added:', todo); // Add this line to log the added todo
     },
   };
   
@@ -30,7 +31,13 @@ const state = {
         body: JSON.stringify(todoData),
       });
       const createdTodo = await response.json();
-      commit('addTodo', createdTodo);
+      
+      // Simulate a delay of 1 second before fetching the updated list
+      setTimeout(async () => {
+        commit('addTodo', createdTodo);
+        await fetchTodos({ commit });
+      }, 1000);
+
     },
   };
   

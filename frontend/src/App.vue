@@ -21,6 +21,7 @@ export default {
     async handleTodoCreated() {
       // This method is called when a new todo is created
       // You can perform any additional actions here if needed
+      console.log("handleTodoCreated() in App.vue");
       await this.$store.dispatch('todos/fetchTodos');
     }
   }
