@@ -5,7 +5,10 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:mypassword@db:5432/mydatabase'
+dbuser = os.environ.get('POSTGRES_USER')
+dbpassword = os.environ.get('POSTGRES_PASSWORD')
+dbname = os.environ.get('POSTGRES_DB')
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{dbuser}:{dbpassword}@db:5432/{dbname}"
 db = SQLAlchemy(app)
 
 # Define your Todo model here
@@ -64,12 +67,14 @@ def create_todo():
 
 @app.route('/todos/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def todo(id):
-    todo = Todo.query.get_or_404(id)
+    #todo = Todo.query.get_or_404(id)
 
     if request.method == 'GET':
+        todo = Todo.query.get_or_404(id)
         return jsonify(todo.__dict__)
 
     if request.method == 'PUT':
+        todo = Todo.query.get_or_404(id)
         data = request.get_json()
         todo.title = data['title']
         todo.completed = data['completed']
@@ -79,6 +84,7 @@ def todo(id):
 
     if request.method == 'DELETE':
         with app.app_context():
+            todo = Todo.query.get_or_404(id)
             db.session.expunge(todo)
             db.session.delete(todo)
             db.session.commit()
