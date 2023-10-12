@@ -28,7 +28,7 @@ export default {
         if (todoListComponent) {
             todoListComponent.fetchTodos();
         } else {
-            console.error('TodoList component not found among child components.';
+            console.error('TodoList component not found among child components.');
         }
         //await this.$store.dispatch('todos/fetchTodos');
       } else {
