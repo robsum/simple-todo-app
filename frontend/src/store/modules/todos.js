@@ -12,6 +12,12 @@ const state = {
       state.todos.push(todo);
       console.log('New todo added:', todo); // Add this line to log the added todo
     },
+    removeTodo(state, todoId) {
+      const index = state.todos.findIndex((todo) => todo.id === todoId);
+      if (index !== -1) {
+        state.todos.splice(index, 1);
+      }
+    },
   };
   
   const actions = {
@@ -39,6 +45,24 @@ const state = {
       }, 1000);
 
     },
+
+    async deleteTodo({ commit }, todoId) {
+      try {
+        const response = await fetch(`/todos/${todoId}`, {
+          method: 'DELETE',
+        });
+  
+        if (response.ok) {
+          // Delete was successful, you can commit a mutation to remove it from the state
+          commit('removeTodo', todoId);
+        } else {
+          console.error('Failed to delete todo');
+        }
+      } catch (error) {
+        console.error('An error occurred while deleting a todo:', error);
+      }
+    },
+
   };
   
   export default {
