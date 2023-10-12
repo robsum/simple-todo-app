@@ -1,4 +1,12 @@
 <template>
+<div>
+  <div class="todo-form">
+    <h3>Create New Todo</h3>
+    <form @submit.prevent="createTodo">
+      <input v-model="newTodo" type="text" placeholder="Enter a new todo" required />
+      <button type="submit">Add</button>
+    </form>
+  </div>
   <div class="todo-list">
     <h2>Todo List</h2>
     <ul>
@@ -8,6 +16,7 @@
       </li>
     </ul>
   </div>
+</div>
 </template>
 
 
@@ -56,6 +65,30 @@ export default {
         console.error('Failed to delete todo:', error);
       }
     },
+    async createTodo() {
+      try {
+        const response = await fetch('/todos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ title: this.newTodo })
+        });
+        if (response.ok) {
+          console.log('TodoForm:createTodo():response.ok');
+          this.newTodo = ''; // Clear the input field after successfully creating the todo
+          await this.fetchTodos();
+        } else if (response.status == 500) {
+          console.log('TodoForm:createTodo():response500');
+          this.newTodo = ''; 
+          await this.fetchTodos();
+        } else {
+          console.error('TodoForm:createTodo():Failed to create a todo');
+        }
+      } catch (error) {
+        console.error('TodoForm:createTodo():An error occurred while creating a todo:', error);
+      }
+    }
   },
 };
 </script>
