@@ -35,7 +35,7 @@ const state = {
       // Simulate a delay of 1 second before fetching the updated list
       setTimeout(async () => {
         commit('addTodo', createdTodo);
-        await fetchTodos({ commit });
+        await this.dispatch('fetchTodos');
       }, 1000);
 
     },
