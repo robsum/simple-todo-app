@@ -8,11 +8,11 @@ until sshpass -p mypassword psql -h db -p 5432 -U myuser -d mydatabase -c '\l' -
 done
 
 # Check if the database already exists
-if psql -h db -p 5432 -U myuser -d mydatabase -lqt | cut -d \| -f 1 | grep -qw mydatabase; then
-  echo "Database already exists, no need to initialize."
-else
+#if sshpass -p mypassword psql -h db -p 5432 -U myuser -d mydatabase -lqt -W | cut -d \| -f 1 | grep -qw mydatabase; then
+#  echo "Database already exists, no need to initialize."
+#else
   # Create the database
-  psql -h db -p 5432 -U myuser -d mydatabase -c "CREATE DATABASE todo"
+  sshpass -p mypassword psql -h db -p 5432 -U myuser -d mydatabase -f /app/create_todo_table.sql -W
 
   # Apply database migrations or other initialization steps
   # Replace this with the actual command you use for database initialization
@@ -20,7 +20,7 @@ else
   # alembic upgrade head
 
   echo "Database initialized successfully."
-fi
+#fi
 
 # Start your actual application
 exec "$@"

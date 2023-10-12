@@ -7,7 +7,8 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     ports:
-      - 5432:5432 
+      - 5432:5432
+    container_name: db
 
   backend:
     build:
@@ -20,7 +21,7 @@ services:
     build:
       context: ./frontend
     ports:
-      - 8080
+      - 80
     container_name: frontend
 
   nginx:
@@ -38,4 +39,5 @@ services:
     depends_on:
       - db
     command: ["./initdb.sh"]
+    container_name: initdb
 
