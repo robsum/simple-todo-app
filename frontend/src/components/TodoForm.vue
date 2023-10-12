@@ -26,12 +26,16 @@ export default {
           body: JSON.stringify({ title: this.newTodo })
         });
         if (response.ok) {
-          this.newTodo = ''; // Clear the input field after successfully creating the todo
-          this.$emit('todo-created', true); // Emit an event to notify the parent component
           console.log('TodoForm:createTodo():response.ok');
+          this.newTodo = ''; // Clear the input field after successfully creating the todo
+          const createdTodo = await response.json();
+          this.$store.commit('todos/addTodo', createdTodo); // Commit the mutation to update the state
+          this.$emit('todo-created', true); // Emit an event to notify the parent component
+          this.$store.dispatch('todos/fetchTodos');
         } else if (response.status == 500) {
           console.log('TodoForm:createTodo():response500');
           this.$emit('todo-created', true);
+          this.$store.dispatch('todos/fetchTodos');
         } else {
           console.error('TodoForm:createTodo():Failed to create a todo');
           this.$emit('todo-created', false);
