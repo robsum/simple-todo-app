@@ -27,12 +27,14 @@ export default {
         });
         if (response.ok) {
           this.newTodo = ''; // Clear the input field after successfully creating the todo
-          this.$emit('todo-created'); // Emit an event to notify the parent component
+          this.$emit('todo-created', true); // Emit an event to notify the parent component
         } else {
           console.error('Failed to create a todo');
+          this.$emit('todo-created', false);
         }
       } catch (error) {
         console.error('An error occurred while creating a todo:', error);
+        this.$emit('todo-created', false); // Emit 'false' for failure
       }
     }
   }

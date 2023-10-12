@@ -18,11 +18,16 @@ export default {
     TodoList
   },
   methods: {
-    async handleTodoCreated() {
-      // This method is called when a new todo is created
-      // You can perform any additional actions here if needed
+    async handleTodoCreated(success) {
       console.log("handleTodoCreated() in App.vue");
-      await this.$store.dispatch('todos/fetchTodos');
+      if (success) {
+        // This method is called when a new todo is created
+        // You can perform any additional actions here if needed
+        console.log('Todo created successfully');
+        await this.$store.dispatch('todos/fetchTodos');
+      } else {
+        console.log('Failed to create a todo');
+      }
     }
   }
 }
