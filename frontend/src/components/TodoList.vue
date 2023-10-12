@@ -32,14 +32,15 @@ export default {
     },
     async fetchTodos() {
       try {
-        const response = await fetch('http://srv16.mikr.us:20112/todos');
+        const response = await fetch('/todos');
         if (response.ok) {
           this.todos = await response.json(); // Update the todos array with the fetched data
+          console.log('TodoList:fetchTodos():response.ok');
         } else {
-          console.error('Failed to fetch todos');
+          console.error('TodoList:fetchTodos():Failed to fetch todos');
         }
       } catch (error) {
-        console.error('An error occurred while fetching todos:', error);
+        console.error('TodoList:fetchTodos():An error occurred while fetching todos:', error);
       }
     }
   }

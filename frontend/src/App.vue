@@ -23,10 +23,16 @@ export default {
       if (success) {
         // This method is called when a new todo is created
         // You can perform any additional actions here if needed
-        console.log('Todo created successfully');
-        await this.$store.dispatch('todos/fetchTodos');
+        console.log('App:handleTodoCreated():Todo created successfully');
+        const todoListComponent = this.$children.find((child) => child.$options.name === 'TodoList');
+        if (todoListComponent) {
+            todoListComponent.fetchTodos();
+        } else {
+            console.error('TodoList component not found among child components.';
+        }
+        //await this.$store.dispatch('todos/fetchTodos');
       } else {
-        console.log('Failed to create a todo');
+        console.log('App:handleTodoCreated():Failed to create a todo');
       }
     }
   }

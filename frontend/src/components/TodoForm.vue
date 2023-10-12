@@ -28,12 +28,16 @@ export default {
         if (response.ok) {
           this.newTodo = ''; // Clear the input field after successfully creating the todo
           this.$emit('todo-created', true); // Emit an event to notify the parent component
+          console.log('TodoForm:createTodo():response.ok');
+        } else if (response.status == 500) {
+          console.log('TodoForm:createTodo():response500');
+          this.$emit('todo-created', true);
         } else {
-          console.error('Failed to create a todo');
+          console.error('TodoForm:createTodo():Failed to create a todo');
           this.$emit('todo-created', false);
         }
       } catch (error) {
-        console.error('An error occurred while creating a todo:', error);
+        console.error('TodoForm:createTodo():An error occurred while creating a todo:', error);
         this.$emit('todo-created', false); // Emit 'false' for failure
       }
     }
