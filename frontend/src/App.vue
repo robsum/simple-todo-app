@@ -18,9 +18,10 @@ export default {
     TodoList
   },
   methods: {
-    handleTodoCreated() {
+    async handleTodoCreated() {
       // This method is called when a new todo is created
       // You can perform any additional actions here if needed
+      await this.$store.dispatch('todos/fetchTodos');
     }
   }
 }

@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -18,7 +20,16 @@ export default {
     // Fetch todo items from the backend when the component is mounted
     this.fetchTodos();
   },
+  computed: {
+    ...mapGetters('todos', ['todos']),
+  },
   methods: {
+    ...mapActions('todos', ['fetchTodos', 'createTodo']),
+    async addTodo() {
+      const newTodo = { title: 'Your New To-Do Task' }; // Replace with your actual todo data
+      await this.createTodo(newTodo);
+      await this.fetchTodos();
+    },
     async fetchTodos() {
       try {
         const response = await fetch('http://srv16.mikr.us:20112/todos');
