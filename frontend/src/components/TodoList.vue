@@ -36,7 +36,7 @@ export default {
     },
     async fetchTodos() {
       try {
-        const response = await fetch('/todos');
+        const response = await fetch('http://backend:5000/todos');
         if (response.ok) {
           this.todos = await response.json(); // Update the todos array with the fetched data
           this.$store.commit('todos/setTodos', this.todos);
