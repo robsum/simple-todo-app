@@ -79,6 +79,7 @@ def todo(id):
 
     if request.method == 'DELETE':
         with app.app_context():
+            db.session.expunge(todo)
             db.session.delete(todo)
             db.session.commit()
         return '', 204
