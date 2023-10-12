@@ -4,7 +4,7 @@
     <ul>
       <li v-for="todo in todos" :key="todo.id">
         {{ todo.title }}
-        <button @click="deleteTodo(todo.id)">Delete</button>
+        <button @click="deleteTodoAction(todo.id)">Delete</button>
       </li>
     </ul>
   </div>
@@ -48,7 +48,7 @@ export default {
         console.error('TodoList:fetchTodos():An error occurred while fetching todos:', error);
       }
     },
-    async deleteTodo(todoId) {
+    async deleteTodoAction(todoId) {
       try {
         await this.deleteTodo(todoId); // Dispatch the 'deleteTodo' action with the todo ID
         await this.fetchTodos(); // Fetch the updated todo list
